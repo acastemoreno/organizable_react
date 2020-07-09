@@ -1,6 +1,26 @@
 // const apiUrl = "http://api-organizable.herokuapp.com";
 import { apiUrl, objectToSnake } from "../utils";
 
+const showUser = async (user_id) => {
+  try {
+    const response = await fetch(`${apiUrl}/users/${user_id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      return { response, data };
+    } else {
+      return { error: data.errors.message };
+    }
+  } catch (error) {
+    return { error: "Network error" };
+  }
+};
+
 const createUser = async (userData) => {
   try {
     const response = await fetch(`${apiUrl}/users`, {
@@ -65,4 +85,4 @@ const deleteUser = async (user) => {
   }
 };
 
-export { createUser, updateUser, deleteUser };
+export { showUser, createUser, updateUser, deleteUser };

@@ -28,7 +28,8 @@ function SignUp({ setCurrentPage, setUser }) {
 
     if (data) {
       setUser(data);
-      setCurrentPage("profile");
+      sessionStorage.setItem("user", JSON.stringify(data));
+      setCurrentPage("boards");
     } else {
       setError(error);
     }
