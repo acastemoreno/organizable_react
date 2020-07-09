@@ -1,9 +1,31 @@
-import { apiUrl } from "../utils";
+import { apiUrl, objectToSnake } from "../utils";
 
 const showBoards = async (current_user) => {
   try {
     const response = await fetch(`${apiUrl}/boards`, {
       method: "GET",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Token token="${current_user.token}"`,
+      },
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      return { data };
+    } else {
+      return { error: data.errors.message };
+    }
+  } catch (error) {
+    return { error: "Network error" };
+  }
+};
+
+const createBoard = async (current_user, boardData) => {
+  try {
+    const response = await fetch(`${apiUrl}/boards`, {
+      method: "POST",
+      body: JSON.stringify({ board: objectToSnake(boardData) }),
       headers: {
         "content-type": "application/json",
         Authorization: `Token token="${current_user.token}"`,
@@ -42,4 +64,4 @@ const deleteBoard = async (current_user, board_id) => {
   }
 };
 
-export { showBoards, deleteBoard };
+export { showBoards, createBoard, deleteBoard };

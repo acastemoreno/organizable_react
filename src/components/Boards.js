@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { BoardsContainer } from "./StyledComponents";
 import CreateBoard from "./CreateBoard";
-import { deleteBoard, showBoards } from "../services/boards";
+import { deleteBoard, createBoard, showBoards } from "../services/boards";
 
 import Board from "./Board";
 
@@ -33,10 +33,19 @@ const Boards = ({ setCurrentPage, user }) => {
     }
   };
 
+  const create_board = async (board) => {
+    const { data, error } = await createBoard(user, board);
+    if (data) {
+      setBoards([...boards, data]);
+    } else {
+      console.log(error);
+    }
+  };
+
   return (
     <Fragment>
       <BoardsContainer>
-        <CreateBoard />
+        <CreateBoard create_board={create_board} />
       </BoardsContainer>
 
       <BoardsContainer>
